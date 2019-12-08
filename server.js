@@ -39,6 +39,9 @@ app.use(session({
   secret: config.secret
 }))
 
+app.get('*', async (req, res) => {
+  res.end('Hello world')
+})
 app.use('/api', authRoute)
 app.use('/api', checkToken, userRoute)
 app.use(getUser)
