@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken'
 
 import User from '../models/user'
 import config from '../config'
+import Page from "../models/page";
 
-export const singup = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   const credentials = req.body
   let user
 
@@ -18,7 +19,7 @@ export const singup = async (req, res, next) => {
   res.json(user)
 }
 
-export const singin = async (req, res, next) => {
+export const signin = async (req, res, next) => {
   const {login, password} = req.body
 
   const user = await User.findOne({login})
@@ -36,7 +37,7 @@ export const singin = async (req, res, next) => {
       message: 'Bad Credentials'
     })
   }
-  //
+
   // try {
   //   const result = await user.comparePasswords(password)
   // } catch(e) {
@@ -50,4 +51,17 @@ export const singin = async (req, res, next) => {
 
   // req.session.userId = user._id;
   res.json(token)
+}
+
+export async function getUsers(req, res, next) {
+  try {
+    var users = await User.find({})
+  } catch({message}) {
+    return next({
+      status: 500,
+      message
+    })
+  }
+
+  res.json({users})
 }
